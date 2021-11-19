@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "lichess-automations": {
+      "hosting": {
+        "lichess-automations-frontend": [
+          "lichess-automations"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "lichess-automations"
+  }
+}
