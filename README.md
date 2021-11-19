@@ -1,2 +1,2 @@
 # lichess_automations_frontend
-UI of my "lichess_automations" project
+UI for my "lichess_automations" project which was tha backend
