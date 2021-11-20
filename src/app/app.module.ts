@@ -21,15 +21,15 @@ import { NewTournamentComponent } from './components/new-tournament/new-tourname
 import { HeaderComponent } from './components/header/header.component';
 import { FourOFourComponent } from './components/four-o-four/four-o-four.component';
 import { ModifyTounamentComponent } from './components/modify-tounament/modify-tounament.component';
-import { ModifyTokenComponent } from './components/modify-token/modify-token.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const appRoutes: Routes = [
   {path: '', component: SigninComponent},
   {path: 'auth/signup', component: SignupComponent},
   {path: 'auth/signin', component: SigninComponent},
   {path: 'user/:id', component: UserComponent},
+  {path: 'user/:id/profile', component: ProfileComponent},
   {path: 'user/:id/modify/tournament', component: ModifyTounamentComponent},
-  {path: 'user/:id/modify/token', component: ModifyTokenComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'new/tournament', component: NewTournamentComponent},
   {path: '**', component: FourOFourComponent}
@@ -46,7 +46,7 @@ const appRoutes: Routes = [
     HeaderComponent,
     FourOFourComponent,
     ModifyTounamentComponent,
-    ModifyTokenComponent
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -65,4 +65,5 @@ const appRoutes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+
+export class AppModule{}
