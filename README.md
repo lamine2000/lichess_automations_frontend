@@ -1,5 +1,6 @@
 # LichessAutomationsFrontend
 
+UI for my "lichess_automations" project which was tha backend.<br>
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.13.
 
 ## Development server
