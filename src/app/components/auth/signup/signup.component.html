@@ -1,1 +1,77 @@
-<p>signup works!</p>
+<nb-card>
+  <nb-card-body>
+    <nb-stepper #stepper linear="true">
+
+      <nb-step [stepControl]="lichessUsernameForm" label="Lichess username">
+        <form #lichessUsernameForm="ngForm" class="step-container">
+          <div class="input-group">
+            <input type="text"
+                   placeholder="Enter your lichess username"
+                   class="form-control"
+                   name="lichessUsername"
+                   required
+                   nbInput
+                   ngModel
+                   #lichessUsername="ngModel"
+                   [status]="lichessUsername.invalid ? 'danger' : 'basic'">
+          </div>
+          <button nbButton nbStepperNext [disabled]="lichessUsername.invalid" (click)="sendConfirmationCode(lichessUsername.value)">next</button>
+
+        </form>
+      </nb-step>
+
+      <nb-step [stepControl]="codeForm" label="Confirmation code">
+        <form #codeForm="ngForm" class="step-container">
+          <div class="input-group">
+            <input type="number"
+                   placeholder="Enter the confirmation code you just received on lichess (from 'lamine2000')"
+                   class="form-control"
+                   name="code"
+                   required
+                   nbInput
+                   ngModel
+                   (change)="getState1(this.code.value); getState2(this.code.value);"
+                   #code="ngModel"
+                   [status]="code.invalid || this.confirmationCode !== this.code.value || getDiffTime() < 5 * 60 * 1000? 'danger' : 'basic'">
+            <p class="redText" *ngIf="getState1(code.value)">The confirmation code is now invalid !</p>
+            <p class="redText" *ngIf="getState2(code.value)">Wrong code !</p>
+          </div>
+          <button nbButton  status="info" (click)="sendConfirmationCode(this.username)">resend code</button>
+          <button nbButton nbStepperNext [disabled]="code.invalid || this.confirmationCode !== this.code.value">next</button>
+          <button nbButton nbStepperPrevious>previous</button>
+
+        </form>
+      </nb-step>
+
+
+      <nb-step [stepControl]="passwordForm" label="Password">
+        <form #passwordForm="ngForm" class="step-container">
+          <div class="input-group">
+            <input type="password"
+                   placeholder="Create a password"
+                   class="form-control"
+                   name="password"
+                   required
+                   nbInput
+                   ngModel
+                   #password="ngModel"
+                   [status]="password.invalid ? 'danger' : 'basic'">
+
+            <input type="password"
+                   placeholder="Confirm Password"
+                   class="form-control"
+                   name="confirmPassword"
+                   required
+                   nbInput
+                   ngModel
+                   #confirmPassword="ngModel"
+                   [status]="confirmPassword.invalid && confirmPassword.value !== password.value ? 'danger' : 'basic'">
+          </div>
+
+          <button nbButton nbStepperNext [disabled]="password.invalid || password.value !== confirmPassword.value">Validate</button>
+        </form>
+      </nb-step>
+
+    </nb-stepper>
+  </nb-card-body>
+</nb-card>

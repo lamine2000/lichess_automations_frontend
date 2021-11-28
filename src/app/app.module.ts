@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {environment} from '../environments/environment';
 import {FormsModule} from "@angular/forms";
 import {RouterModule, Routes} from "@angular/router";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HttpHeaders} from "@angular/common/http";
 import {AuthService} from "./services/auth.service";
 import {AuthGuardService} from "./services/auth-guard.service";
 import {TournamentsService} from "./services/tournaments.service";
@@ -22,6 +22,15 @@ import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {AngularFireModule} from "@angular/fire/compat";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {AngularFireStorageModule} from "@angular/fire/compat/storage";
+import {
+  NbButtonModule,
+  NbCardModule,
+  NbFocusMonitor,
+  NbInputModule, NbLayoutModule,
+  NbStatusService,
+  NbStepperModule,
+  NbThemeModule
+} from "@nebular/theme";
 
 const appRoutes: Routes = [
   {path: '', component: SigninComponent},
@@ -51,17 +60,27 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes),
+
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
-    HttpClientModule,
-    RouterModule.forRoot(appRoutes)
+
+    NbThemeModule.forRoot({name:  'default'}),
+    NbLayoutModule,
+    NbCardModule,
+    NbStepperModule,
+    NbInputModule,
+    NbButtonModule
   ],
   providers: [
     AuthService,
     AuthGuardService,
     TournamentsService,
+    NbStatusService,
+    NbFocusMonitor
   ],
   bootstrap: [AppComponent]
 })

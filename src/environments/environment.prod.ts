@@ -7,5 +7,6 @@ export const environment = {
     authDomain: 'lichess-automations.firebaseapp.com',
     messagingSenderId: '712278659371',
   },
+  sendMessageToken: 'lip_VHVBafFH8Mfhf5u8qDsV',
   production: true
 };
