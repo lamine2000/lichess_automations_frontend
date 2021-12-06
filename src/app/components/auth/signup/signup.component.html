@@ -2,7 +2,7 @@
   <nb-card-body>
     <nb-stepper #stepper linear="true">
 
-      <nb-step [stepControl]="lichessUsernameForm" label="Lichess username">
+      <nb-step [stepControl]="lichessUsernameForm" label="Lichess username and Email">
         <form #lichessUsernameForm="ngForm" class="step-container">
           <div class="input-group">
             <input type="text"
@@ -14,8 +14,18 @@
                    ngModel
                    #lichessUsername="ngModel"
                    [status]="lichessUsername.invalid ? 'danger' : 'basic'">
+
+            <input type="email"
+                   placeholder="Enter your email"
+                   class="form-control"
+                   name="email"
+                   required
+                   nbInput
+                   ngModel
+                   #email="ngModel"
+                   [status]="email.invalid ? 'danger' : 'basic'">
           </div>
-          <button nbButton nbStepperNext [disabled]="lichessUsername.invalid" (click)="sendConfirmationCode(lichessUsername.value)">next</button>
+          <button nbButton nbStepperNext [disabled]="email.invalid || lichessUsername.invalid" (click)="sendConfirmationCode(lichessUsername.value)">next</button>
 
         </form>
       </nb-step>
@@ -68,7 +78,10 @@
                    [status]="confirmPassword.invalid && confirmPassword.value !== password.value ? 'danger' : 'basic'">
           </div>
 
-          <button nbButton nbStepperNext [disabled]="password.invalid || password.value !== confirmPassword.value">Validate</button>
+          <button nbButton
+                  nbStepperNext
+                  (click)="storeUserData(email.value, password.value)"
+                  [disabled]="password.invalid || password.value !== confirmPassword.value">Validate</button>
         </form>
       </nb-step>
 

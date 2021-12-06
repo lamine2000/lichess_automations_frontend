@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { LichessApiRequestsService } from 'src/app/services/lichess-api-requests.service';
+import {AuthService} from "../../../services/auth.service";
+import {User} from "../../../model/user.model";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +16,12 @@ export class SignupComponent implements OnInit {
   messageSentAt = new Date();
   username!: string;
 
-  constructor(private lichess: LichessApiRequestsService) { }
+  constructor(
+    private lichess: LichessApiRequestsService,
+    private authService: AuthService,
+    private db: AngularFirestore,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
@@ -39,5 +48,29 @@ export class SignupComponent implements OnInit {
     return !this.getState1(code) && code && this.confirmationCode !== eval(code) && this.getDiffTime() < 5 * 60 * 1000;
   }
 
-
+  storeUserData(email: string, password: string){
+    this.authService.createNewUser(email, password)
+      .then(
+      (value) => {
+        // @ts-ignore
+        let userAuth = value.user;
+        this.db.collection("/users").doc<User>(this.username).set(
+          {
+            uid: userAuth.uid,
+            email: email,
+            lichessUsername: this.username,
+            password: password,
+            lichessToken: ''
+          }
+        )
+          .then(() => {this.router.navigate(['/user', 'auth', 'signIn'])});
+      },
+        reason => {}
+      )
+      .catch((error) => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  }
 }

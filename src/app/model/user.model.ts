@@ -1,7 +1,11 @@
 export class User {
+  lichessToken: string;
+
   constructor(
     public uid: string,
     public email: string,
-    public lichess_userame: string,
-    public lichess_token: string){}
+    public lichessUsername: string,
+    public password: string){
+    this.lichessToken = '';
+  }
 }
