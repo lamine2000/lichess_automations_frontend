@@ -22,6 +22,7 @@
     "@angular/router": "~12.2.0",
     "@nebular/eva-icons": "8.0.0",
     "@nebular/theme": "^8.0.0",
+    "bcrypt": "^5.0.1",
     "bootstrap": "^5.1.3",
     "cors": "^2.8.5",
     "eva-icons": "^1.1.2",
