@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {NbGlobalPhysicalPosition, NbToastrService} from '@nebular/theme';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,8 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
 export class AuthService {
 
   constructor(
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private toastrService: NbToastrService
   ) { }
 
   createNewUser(email:string, password: string){
@@ -16,7 +18,21 @@ export class AuthService {
         this.auth.createUserWithEmailAndPassword(email, password)
           .then(
             (success) => {resolve(success);},
-            (error) => {reject(error);}
+            (error) => {throw error;}
+          )
+          .catch(
+            (error) => {
+              this.toastrService.show(
+                `Une erreur est survenue lors de la création du compte ! ${error.code}`,
+                `Erreur rencontrée`,
+                {
+                  position: NbGlobalPhysicalPosition.TOP_RIGHT,
+                  duration: 10000,
+                  destroyByClick: true,
+                  status: 'danger'
+                }
+              );
+            }
           );
       }
     );

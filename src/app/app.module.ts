@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {environment} from '../environments/environment';
 import {FormsModule} from "@angular/forms";
 import {RouterModule, Routes} from "@angular/router";
-import {HttpClientModule, HttpHeaders} from "@angular/common/http";
+import {HttpClientModule} from "@angular/common/http";
 import {AuthService} from "./services/auth.service";
 import {AuthGuardService} from "./services/auth-guard.service";
 import {TournamentsService} from "./services/tournaments.service";
@@ -22,6 +22,7 @@ import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 import {AngularFireModule} from "@angular/fire/compat";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {AngularFireStorageModule} from "@angular/fire/compat/storage";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {
   NbButtonModule,
   NbCardModule,
@@ -29,8 +30,9 @@ import {
   NbInputModule, NbLayoutModule,
   NbStatusService,
   NbStepperModule,
-  NbThemeModule
+  NbThemeModule, NbToastrModule
 } from "@nebular/theme";
+
 
 const appRoutes: Routes = [
   {path: '', component: SigninComponent},
@@ -62,6 +64,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
+    BrowserAnimationsModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
@@ -73,7 +76,8 @@ const appRoutes: Routes = [
     NbCardModule,
     NbStepperModule,
     NbInputModule,
-    NbButtonModule
+    NbButtonModule,
+    NbToastrModule.forRoot({})
   ],
   providers: [
     AuthService,

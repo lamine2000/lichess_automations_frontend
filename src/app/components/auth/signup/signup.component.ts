@@ -4,6 +4,7 @@ import {AuthService} from "../../../services/auth.service";
 import {User} from "../../../model/user.model";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Router} from "@angular/router";
+import {Md5} from "ts-md5";
 
 @Component({
   selector: 'app-signup',
@@ -59,18 +60,14 @@ export class SignupComponent implements OnInit {
             uid: userAuth.uid,
             email: email,
             lichessUsername: this.username,
-            password: password,
+            password: Md5.hashStr(password),
             lichessToken: ''
           }
         )
-          .then(() => {this.router.navigate(['/user', 'auth', 'signIn'])});
+          .then(() => {this.router.navigate(['/auth', 'signin'])});
       },
-        reason => {}
+        reason => { throw reason;}
       )
-      .catch((error) => {
-        let errorCode = error.code;
-        let errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+      .catch(() => { });
   }
 }

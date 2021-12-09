@@ -25,10 +25,10 @@ export class LichessApiRequestsService {
     this.http.post(baseUrl, body, options)
       .subscribe({
           next: data => {
-            console.log(`réponse : ${data}`);
+            //console.log(`réponse : ${data}`);
           },
           error: err => {
-            console.log(`erreur: `, err);
+            //console.log(`erreur: `, err);
           }
         }
       );
