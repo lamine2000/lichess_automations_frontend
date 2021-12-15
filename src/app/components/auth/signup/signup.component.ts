@@ -68,9 +68,9 @@ export class SignupComponent implements OnInit {
           }
         )
           .then(() => {this.router.navigate(['/auth', 'signin'])});
-      }/*,
-        reason => { throw reason;}*/
+      },
+        reason => { throw reason;}
       )
-      .catch((reason) => { });
+      .catch(() => { });
   }
 }
