@@ -14,7 +14,7 @@ export class AuthService {
 
   createNewUser(email:string, password: string){
     return new Promise(
-      (resolve, reject) => {
+      (resolve) => {
         this.auth.createUserWithEmailAndPassword(email, password)
           .then(
             (success) => {resolve(success);},

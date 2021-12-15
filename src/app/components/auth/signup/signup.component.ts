@@ -46,7 +46,10 @@ export class SignupComponent implements OnInit {
   }
 
   getState2(code: string){
-    return !this.getState1(code) && code && this.confirmationCode !== eval(code) && this.getDiffTime() < 5 * 60 * 1000;
+    return !this.getState1(code) &&
+      code &&
+      this.confirmationCode !== eval(code) &&
+      this.getDiffTime() < 5 * 60 * 1000;
   }
 
   storeUserData(email: string, password: string){
@@ -65,9 +68,9 @@ export class SignupComponent implements OnInit {
           }
         )
           .then(() => {this.router.navigate(['/auth', 'signin'])});
-      },
-        reason => { throw reason;}
+      }/*,
+        reason => { throw reason;}*/
       )
-      .catch(() => { });
+      .catch((reason) => { });
   }
 }
