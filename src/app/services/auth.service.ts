@@ -9,7 +9,7 @@ export class AuthService {
 
   constructor(
     private auth: AngularFireAuth,
-    private toastrService: NbToastrService
+    private toastService: NbToastrService
   ) { }
 
   createNewUser(email:string, password: string){
@@ -22,7 +22,7 @@ export class AuthService {
           )
           .catch(
             (error) => {
-              this.toastrService.show(
+              this.toastService.show(
                 `Une erreur est survenue lors de la création du compte ! ${error.code}`,
                 `Erreur rencontrée`,
                 {
