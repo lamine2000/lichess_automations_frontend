@@ -51,12 +51,12 @@ export class SignupComponent implements OnInit {
     return now.getMilliseconds() - this.messageSentAt.getMilliseconds();
   }
 
-  getState1(code: string){
+  getState1(){
     return this.getDiffTime() > 5 * 60 * 1000;
   }
 
   getState2(code: string){
-    return !this.getState1(code) &&
+    return !this.getState1() &&
       code &&
       this.confirmationCode !== eval(code) &&
       this.getDiffTime() < 5 * 60 * 1000;

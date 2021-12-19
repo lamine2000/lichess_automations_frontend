@@ -1,6 +1,6 @@
 <nb-card>
   <nb-card-body>
-    <nb-stepper #stepper linear="true">
+    <nb-stepper linear="true">
 
       <nb-step [stepControl]="lichessUsernameForm" label="Username and Email">
         <form #lichessUsernameForm="ngForm" class="step-container">
@@ -45,7 +45,7 @@
                    (ngModelChange)="styleInput(code)"
                    #code="ngModel"
                    [status]="inputStyles.code">
-            <p class="redText" *ngIf="getState1(code.value)">The confirmation code is now invalid !</p>
+            <p class="redText" *ngIf="getState1()">The confirmation code is now invalid !</p>
             <p class="redText" *ngIf="getState2(code.value)">Wrong code !</p>
           </div>
           <button nbButton  status="info" (click)="sendConfirmationCode(this.username)">resend code</button>
