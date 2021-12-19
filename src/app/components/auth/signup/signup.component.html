@@ -2,7 +2,7 @@
   <nb-card-body>
     <nb-stepper #stepper linear="true">
 
-      <nb-step [stepControl]="lichessUsernameForm" label="Lichess username and Email">
+      <nb-step [stepControl]="lichessUsernameForm" label="Username and Email">
         <form #lichessUsernameForm="ngForm" class="step-container">
           <div class="input-group">
             <input type="text"
@@ -13,7 +13,8 @@
                    nbInput
                    ngModel
                    #lichessUsername="ngModel"
-                   [status]="lichessUsername.invalid ? 'danger' : 'basic'">
+                   (ngModelChange)="styleInput(lichessUsername)"
+                   [status]="inputStyles.lichessUsername">
 
             <input type="email"
                    placeholder="Enter your email"
@@ -23,9 +24,10 @@
                    nbInput
                    ngModel
                    #email="ngModel"
-                   [status]="email.invalid ? 'danger' : 'basic'">
+                   (ngModelChange)="styleInput(email)"
+                   [status]="inputStyles.email">
           </div>
-          <button nbButton nbStepperNext [disabled]="email.invalid || lichessUsername.invalid" (click)="sendConfirmationCode(lichessUsername.value)">next</button>
+          <button nbButton nbStepperNext [disabled]="!canGoNext(lichessUsername, email)" (click)="sendConfirmationCode(lichessUsername.value)">next</button>
 
         </form>
       </nb-step>
@@ -40,14 +42,14 @@
                    required
                    nbInput
                    ngModel
-                   (change)="getState1(this.code.value); getState2(this.code.value);"
+                   (ngModelChange)="styleInput(code)"
                    #code="ngModel"
-                   [status]="code.invalid || this.confirmationCode !== this.code.value || getDiffTime() < 5 * 60 * 1000? 'danger' : 'basic'">
+                   [status]="inputStyles.code">
             <p class="redText" *ngIf="getState1(code.value)">The confirmation code is now invalid !</p>
             <p class="redText" *ngIf="getState2(code.value)">Wrong code !</p>
           </div>
           <button nbButton  status="info" (click)="sendConfirmationCode(this.username)">resend code</button>
-          <button nbButton nbStepperNext [disabled]="code.invalid || this.confirmationCode !== this.code.value">next</button>
+          <button nbButton nbStepperNext [disabled]="!canGoNext(code)">next</button>
           <button nbButton nbStepperPrevious>previous</button>
 
         </form>
@@ -64,8 +66,9 @@
                    required
                    nbInput
                    ngModel
+                   (ngModelChange)="setPasswordField(password); styleInput(confirmPassword)"
                    #password="ngModel"
-                   [status]="password.invalid ? 'danger' : 'basic'">
+                   status = "{{inputStyles.password}}">
 
             <input type="password"
                    placeholder="Confirm Password"
@@ -74,14 +77,15 @@
                    required
                    nbInput
                    ngModel
+                   (ngModelChange)="styleInput(confirmPassword)"
                    #confirmPassword="ngModel"
-                   [status]="confirmPassword.invalid && confirmPassword.value !== password.value ? 'danger' : 'basic'">
+                   [status]="inputStyles.confirmPassword">
           </div>
 
           <button nbButton
                   nbStepperNext
                   (click)="storeUserData(email.value, password.value)"
-                  [disabled]="password.invalid || password.value !== confirmPassword.value">Validate</button>
+                  [disabled]="!canGoNext(password, confirmPassword)">Validate</button>
         </form>
       </nb-step>
 
