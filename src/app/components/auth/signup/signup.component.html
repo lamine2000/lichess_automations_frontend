@@ -27,7 +27,7 @@
                    (ngModelChange)="styleInput(email)"
                    [status]="inputStyles.email">
           </div>
-          <button nbButton nbStepperNext [disabled]="!canGoNext(lichessUsername, email)" (click)="sendConfirmationCode(lichessUsername.value)">next</button>
+          <button nbButton nbStepperNext [disabled]="!canGoNext(lichessUsername, email)" (click)="checkForUniqueUsername(lichessUsername)">next</button>
 
         </form>
       </nb-step>

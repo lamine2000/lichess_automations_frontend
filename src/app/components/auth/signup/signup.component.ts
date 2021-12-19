@@ -6,6 +6,7 @@ import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Router} from "@angular/router";
 import {Md5} from "ts-md5";
 import {NgModel} from "@angular/forms";
+import {NbGlobalPhysicalPosition, NbToastrService} from "@nebular/theme";
 
 @Component({
   selector: 'app-signup',
@@ -30,7 +31,8 @@ export class SignupComponent implements OnInit {
     private lichess: LichessApiRequestsService,
     private authService: AuthService,
     private db: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private toastService: NbToastrService
   ) { }
 
   ngOnInit(): void {
@@ -40,8 +42,6 @@ export class SignupComponent implements OnInit {
     this.username = lichessUsername;
     this.messageSentAt = new Date();
     this.confirmationCode = Math.floor(Math.random() * 1000000);
-    console.log(this.confirmationCode);
-
     let message = `Confirmation Code : ${this.confirmationCode}\n\nThis Code will only stay valid for five (5) minutes.\n\n_____________________________\nSent by lichessAutomations`;
     this.lichess.sendPrivateMessage(this.username, message);
   }
@@ -68,7 +68,7 @@ export class SignupComponent implements OnInit {
       (value) => {
         // @ts-ignore
         let userAuth = value.user;
-        this.db.collection("/users").doc<User>(this.username).set(
+        this.db.collection("/users").doc<User>(this.username.toLocaleLowerCase()).set(
           {
             uid: userAuth.uid,
             email: email,
@@ -77,7 +77,7 @@ export class SignupComponent implements OnInit {
             lichessToken: ''
           }
         )
-          .then(() => {this.router.navigate(['/auth', 'signin'])});
+          .then(() => {this.router.navigate(['/auth', 'signin'])})
       },
         reason => { throw reason;}
       )
@@ -118,5 +118,45 @@ export class SignupComponent implements OnInit {
 
   setPasswordField(passwordField: NgModel){
     this.passwordField = passwordField;
+  }
+
+  checkForUniqueUsername(usernameField: NgModel){
+    this.db
+      .collection('/users')
+      .doc<User>(usernameField.value.toLowerCase())
+      .get()
+      .subscribe(
+      (data) => {
+      if(!data.exists){
+        this.sendConfirmationCode(this.username);
+      }
+      else{
+        this.toastService.show(
+          `Un compte possède déja le username lichess suivant : ${usernameField.value} !\nRedirection en cours... `,
+          `Erreur rencontrée`,
+          {
+            position: NbGlobalPhysicalPosition.TOP_RIGHT,
+            duration: 5000,
+            destroyByClick: true,
+            status: 'danger'
+          }
+        );
+        setTimeout(
+          () => {
+            this.router.navigate(['/auth', 'signin']);
+            this.toastService.show(
+              `Vous avez été redirigé vers la page de connexion`,
+              `Redirection effectuée`,
+              {
+                position: NbGlobalPhysicalPosition.TOP_RIGHT,
+                duration: 10000,
+                destroyByClick: true,
+                status: 'success'
+              }
+            );
+            },
+          0);
+      }
+    });
   }
 }
