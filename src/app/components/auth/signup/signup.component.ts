@@ -44,6 +44,19 @@ export class SignupComponent implements OnInit {
     this.confirmationCode = Math.floor(Math.random() * 1000000);
     let message = `Confirmation Code : ${this.confirmationCode}\n\nThis Code will only stay valid for five (5) minutes.\n\n_____________________________\nSent by lichessAutomations`;
     this.lichess.sendPrivateMessage(this.username, message);
+
+    this.toastService.show(
+      `Code de confirmation envoyé directement à votre compte lichess!`,
+      `Code envoyé`,
+      {
+        position: NbGlobalPhysicalPosition.TOP_RIGHT,
+        duration: 5000,
+        destroyByClick: true,
+        status: 'info'
+      }
+    );
+
+
   }
 
   getDiffTime() {
@@ -77,7 +90,23 @@ export class SignupComponent implements OnInit {
             lichessToken: ''
           }
         )
-          .then(() => {this.router.navigate(['/auth', 'signin'])})
+          .then(
+            () => {this.router.navigate(['/auth', 'signin'])
+              .then(
+                () => {
+                  this.toastService.show(
+                    `Votre compte lichessAutomations a été créé avec succès !\nRedirection en cours... `,
+                    `Création du compte réussie`,
+                    {
+                      position: NbGlobalPhysicalPosition.TOP_RIGHT,
+                      duration: 5000,
+                      destroyByClick: true,
+                      status: 'success'
+                    }
+                  );
+                }
+              );
+            })
       },
         reason => { throw reason;}
       )
@@ -128,7 +157,7 @@ export class SignupComponent implements OnInit {
       .subscribe(
       (data) => {
       if(!data.exists){
-        this.sendConfirmationCode(this.username);
+        this.sendConfirmationCode(usernameField.value);
       }
       else{
         this.toastService.show(
